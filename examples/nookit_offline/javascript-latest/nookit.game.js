@@ -1,16 +1,18 @@
 var resolution = [640,480];
+
+const urlParams = new URLSearchParams(window.location.search);
+
 if (urlParams.has('screenWidth')) {
 	resolution[0] = parseInt(urlParams.get('screenWidth'));
 }
 if (urlParams.has('screenHeight')) {
 	resolution[0] = parseInt(urlParams.get('screenHeight'));
 }
+
 masonry_init(resolution);
 
 ctx_window.font = "32px Arial";
 ctx_window.textBaseline = "top";
-
-const urlParams = new URLSearchParams(window.location.search);
 
 var boxSize = [resolution[0]/2,resolution[1]/2/2];
 
