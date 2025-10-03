@@ -1,0 +1,52 @@
+[
+	{
+		"question":"What is the capital of Arizona?",
+		"options":[
+			"A","Tuscon","Phoenix","Tempe"
+		],
+		"correct":"A"
+	},{
+		"question":"What is love?",
+		"options":[
+			"Baby don't hurt me","An internal chemical reaction","A feeling","Give Up"
+		],
+		"correct":"Baby don't hurt me"
+	},{
+		"question":"Does every teacher hate Myles?",
+		"options":[
+			"Yes","No","Yes","Yes"
+		],
+		"correct":"No"
+	},{
+		"question":"Does every teacher like Donovan?",
+		"options":[
+			"No!","No...","No?","No."
+		],
+		"correct":"No."
+	},{
+		"question":"What am I doing?",
+		"options":[
+			"Coding","Writing","Who am I doing?","Driving in my car"
+		],
+		"correct":"Who am I doing?"
+	},{
+		"question":"AHH",
+		"options":[
+			"A","AH","AHH","AHHH"
+		],
+		"correct":"AHHH"
+	},{
+		"question":"Am I the best?",
+		"options":[
+			"Yes","Yes","Yes","Yes"
+		],
+		"correct":"Yes"
+	},{
+		"question":"Who is the best teacher?",
+		"options":[
+			"Ms. Fritzche","Mrs. Cox","Mrs. James","All of the above"
+		],
+		"correct":"All of the above"
+	}
+]
+
