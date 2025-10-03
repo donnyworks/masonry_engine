@@ -32,7 +32,7 @@ draw_text("Waiting...",640 - siz.width,0,align="end");
 // Class constructors & game fetch
 
 var datae = [];
-fetch('http://192.168.7.142/questions.json')
+fetch('https://donnyworks.github.io/masonry_engine/examples/nookit_offline/questions.json')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
