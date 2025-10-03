@@ -141,8 +141,8 @@ var state_finished = false;
 function gameLoop(timestamp) {
 	var deltarune = (timestamp - lastTime)/1000;
 	if (container_running && !state_finished) {
-		draw_rect([255,255,255],[0,0,640,480]);
-		draw_rect([255,0,255],[0,0,640,32]);
+		draw_rect([255,255,255],[0,0,resolution[0],resolution[1]]);
+		draw_rect([255,0,255],[0,0,resolution[0],32]);
 		draw_text(username);
 		var siz = ctx_window.measureText("© " + points);
 		draw_text("© " + points,640 - siz.width,0,align="end");
