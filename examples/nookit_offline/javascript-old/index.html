@@ -2,7 +2,7 @@
 <canvas id="game"></canvas>
 <script>
 var datae = [];
-fetch('http://127.0.0.1/questions.json')
+fetch('https://donnyworks.github.io/masonry_engine/examples/nookit_offline/questions.json')
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
