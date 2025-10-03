@@ -1,0 +1,188 @@
+<title id="title">[WindowTitle]</title>
+<canvas id="game"></canvas>
+<script>
+var datae = [];
+fetch('http://127.0.0.1/questions.json')
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response.json(); // Or response.text(), response.blob(), etc.
+  })
+  .then(data => {
+    datae = data;
+for (var i = 0; i < datae.length; i++) {
+	console.log("Loading question number " + (i + 1));
+	var question = datae[i];
+	questions.push(new Question(question["question"],question["options"],question["correct"]));
+}
+q = questions[q_idx];
+requestAnimationFrame(gameLoop);
+  })
+  .catch(error => {
+    console.error('Fetch error:', error);
+  });
+var canvas = document.getElementById("game");
+canvas.width = 640;
+canvas.height = 480;
+var ctx_window = canvas.getContext("2d");
+document.getElementById("title").innerHTML = "Nookit";
+ctx_window.font = "32px Arial";
+ctx_window.textBaseline = "top";
+function draw_rect(color, rect) { // window, (255,0,0), (0,0,640,480)
+	ctx_window.fillStyle = "rgb(" + String(color[0]) + "," + String(color[1]) + "," + String(color[2]) + ")";
+	//console.log(rect);
+	ctx_window.fillRect(rect[0],rect[1],rect[2],rect[3]);
+}
+
+var _MASONRY_VERBOSE = false;
+
+function draw_text(text,x=0,y=0,color=[255,255,255],align="left") {
+	if (_MASONRY_VERBOSE) { console.log("Drawing " + text + " with color " + color + " and alignment " + align + " at " + x + ", " + y); }
+	ctx_window.fillStyle = "rgb(" + String(color[0]) + "," + String(color[1]) + "," + String(color[2]) + ")";
+	ctx_window.textAlign = align;
+	ctx_window.fillText(text, x, y);
+}
+var resolution = [640,480];
+var boxSize = [resolution[0]/2,resolution[1]/2/2];
+	draw_rect([255,255,255],[0,0,640,480]);
+	draw_rect([255,0,255],[0,0,640,32]);
+	draw_text(username);
+	var siz = ctx_window.measureText("Waiting...");
+	draw_text("Waiting...",640 - siz.width,0,align="end");
+class Question {
+    constructor(question,answers,valid_answer,colors=[[[255,0,0],[0,255,0]],[[0,0,255],[255,255,0]]]){ // Valid answer is text
+        this.q = question;
+        this.a = answers;
+        this.v = valid_answer;
+        this.c = colors;
+        this.active = true;
+        this.result = null;
+    }
+    render() {
+        //text = fontLarge.render(this.q,True,(0,0,0))
+        var renderSize = fnt_size(this.q)
+        draw_text(this.q,(resolution[0]/2)-renderSize[0]/2,(resolution[1]/2/2+16)-renderSize[1]/2,[0,0,0]);
+        for (var x = 0; x < 2; x++) {
+            for (var y = 0; y < 2; y++) {
+                draw_rect(this.c[x][y],[(resolution[0]/2)*x,(resolution[1]/2) + ((resolution[1]/2/2)*y),boxSize[0],boxSize[1]]);
+                var innerText = this.a[x + y*2];
+                var renderSize = fnt_size(innerText);
+                var colorX = [255,255,255];
+		if (y == 1) {
+			colorX = [127,127,127];
+		}
+                //text = fontLarge.render(innerText,True,colorX)
+		//console.log(renderSize);
+		//console.log(((resolution[1]/2)+(resolution[1]/2/2)*y)-renderSize[1]/2+boxSize[1]/2);
+                draw_text(innerText,(resolution[0]/2)*x + boxSize[0]/2-renderSize[0]/2,((resolution[1]/2)+(resolution[1]/2/2)*y)-renderSize[1]/2+boxSize[1]/2,colorX);
+	    }
+	}
+    }
+    handleEvent(n,t){
+	var pos = [n,t]; 
+        for (var x = 0; x < 2; x++) {
+            for (var y = 0; y < 2; y++) {
+		console.log(x + "," + y + "-------------");
+		console.log(pos);
+		var rect = [(resolution[0]/2)*x,(resolution[1]/2) + ((resolution[1]/2/2)*y),boxSize[0],boxSize[1]];
+		//console.log(rect);
+                var xp = rect[0];
+                var yp = rect[1];
+                var xs = rect[0] + rect[2];
+                var ys = rect[1] + rect[3];
+		console.log("Check 1: " + (pos[0] > xp - 1));
+		console.log("Check 2: " + (pos[0] < xs + 1));
+		console.log("Check 3: " + (pos[1] > yp - 1));
+		console.log("Check 4: " + (pos[1] < ys + 1));
+		console.log("End result: " + (pos[0] > xp - 1 && pos[0] < xs + 1 && pos[1] > yp - 1 && pos[1] < ys + 1));
+                if (pos[0] > xp - 1 && pos[0] < xs + 1 && pos[1] > yp - 1 && pos[1] < ys + 1) {
+                    this.result = this.a[x + y*2] == this.v;
+                    this.active = false;
+		}
+	    }
+	}
+    }
+}
+
+var q = null;
+
+var username = "CONECONECONECONE";
+
+var points = 0;
+
+var questions = [];
+
+var q_idx = 0;
+
+
+function fnt_size(text) {
+	return [
+		ctx_window.measureText(text).width,
+		Math.abs(ctx_window.measureText(text).actualBoundingBoxAscent) + Math.abs(ctx_window.measureText(text).actualBoundingBoxDescent)];
+}
+
+function getClickPosition(event) {
+        const rect = canvas.getBoundingClientRect(); // Get the size and position of the canvas
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+	if (q.active) { q.handleEvent(x,y); }
+        //console.log(`Click coordinates on canvas: x=${x}, y=${y}`);
+        // You can now use these x, y coordinates for drawing or other logic
+}
+
+canvas.addEventListener('mousedown',getClickPosition);
+
+var elapsed = 0.0;
+
+var q_elapsed = 0.0;
+
+var lastTime = 0.0;
+
+function gameLoop(timestamp) {
+	var deltarune = (timestamp - lastTime)/1000;
+	draw_rect([255,255,255],[0,0,640,480]);
+	draw_rect([255,0,255],[0,0,640,32]);
+	draw_text(username);
+	var siz = ctx_window.measureText("© " + points);
+	draw_text("© " + points,640 - siz.width,0,align="end");
+	if (q.active) {
+		q.render();
+		q_elapsed += deltarune;
+	} else {
+		//console.log(deltarune);
+		if (elapsed < 2.0) {
+			console.log("Waiting " + (2 - elapsed) + " seconds...");
+			elapsed += deltarune;
+			draw_rect([0,127,127],[0,32,resolution[0],resolution[1]-32]);
+			//spin = fontLarge.render("Sly like a fox?",True,(255,255,255))
+			var s = fnt_size("Sly like a fox?");
+			var w = s[0];
+			var h = s[1];
+			//console.log([resolution[0]/2-w/2,resolution[1]/2-h/2]);
+			draw_text("Sly like a fox?",resolution[0]/2-w/2,resolution[1]/2-h/2);
+		} else {
+			var result = Math.round(15 - (q_elapsed));
+			if (result < 1) { result = 1; }
+			points += result;
+                	q_elapsed = 0.0;
+                	elapsed = 0.0;
+                	if (q_idx < questions.length - 1) {
+                    		q_idx += 1;
+                    		q = questions[q_idx];
+                	} else {
+				var s = fnt_size("You got " + points + " points");
+				var w = s[0];
+				var h = s[1];
+				draw_text("You got " + points + " points",resolution[0]/2-w/2,resolution[1]/2-h/2);
+			}
+		}
+	}
+	lastTime = timestamp;
+	requestAnimationFrame(gameLoop);
+}
+
+// Start the animation loop
+
+</script>
+
