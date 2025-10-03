@@ -38,10 +38,10 @@ var lastTime = 0.0;
 
 // Create idle screen while waiting for request to finish.
 draw_rect([255,255,255],[0,0,640,480]);
-draw_rect([255,0,255],[0,0,640,32]);
+draw_rect([255,0,255],[0,0,resolution[0],32]);
 draw_text(username);
 var siz = ctx_window.measureText("Waiting...");
-draw_text("Waiting...",640 - siz.width,0,align="end");
+draw_text("Waiting...",resolution[0] - siz.width,0,align="end");
 // Class constructors & game fetch
 
 var request_url = 'https://donnyworks.github.io/masonry_engine/examples/nookit_offline/questions.json';
@@ -164,7 +164,7 @@ function gameLoop(timestamp) {
 		draw_rect([255,0,255],[0,0,resolution[0],32]);
 		draw_text(username);
 		var siz = ctx_window.measureText("© " + points);
-		draw_text("© " + points,640 - siz.width,0,align="end");
+		draw_text("© " + points,resolution[0] - siz.width,0,align="end");
 		if (q.active) {
 			q.render();
 			q_elapsed += deltarune;
