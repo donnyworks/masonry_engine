@@ -5,11 +5,17 @@ masonry_init(resolution);
 ctx_window.font = "32px Arial";
 ctx_window.textBaseline = "top";
 
+const urlParams = new URLSearchParams(window.location.search);
+
 var boxSize = [resolution[0]/2,resolution[1]/2/2];
 
 var q = null;
 
 var username = "CONECONECONECONE";
+
+if (urlParams.has('username')) {
+	username = urlParams.get('username');
+}
 
 var points = 0;
 
@@ -31,8 +37,14 @@ var siz = ctx_window.measureText("Waiting...");
 draw_text("Waiting...",640 - siz.width,0,align="end");
 // Class constructors & game fetch
 
+var request_url = 'https://donnyworks.github.io/masonry_engine/examples/nookit_offline/questions.json';
+
+if (urlParams.has('request_url')) {
+	request_url = urlParams.get('request_url');
+}
+
 var datae = [];
-fetch('https://donnyworks.github.io/masonry_engine/examples/nookit_offline/questions.json')
+fetch(request_url)
   .then(response => {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
