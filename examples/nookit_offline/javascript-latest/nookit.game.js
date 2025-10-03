@@ -1,5 +1,10 @@
 var resolution = [640,480];
-
+if (urlParams.has('screenWidth')) {
+	resolution[0] = parseInt(urlParams.get('screenWidth'));
+}
+if (urlParams.has('screenHeight')) {
+	resolution[0] = parseInt(urlParams.get('screenHeight'));
+}
 masonry_init(resolution);
 
 ctx_window.font = "32px Arial";
