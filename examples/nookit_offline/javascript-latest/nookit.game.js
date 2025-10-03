@@ -122,7 +122,7 @@ function getClickPosition(event) {
         var ys = new_rect[1] + new_rect[3];
         if (pos[0] > xp - 1 && pos[0] < xs + 1 && pos[1] > yp - 1 && pos[1] < ys + 1) {
         	console.log("%cWARNING!","color: red; font-size: 200%;");
-        	console.log("The browser console is a developer tool not intended for use by [redacted] users.  FEEL FREE TO copy and paste any code in this window.  Look, we trust you not to hack our game. Pretty please, don't go poking around where you're not meant to. http://github.com/donnyworks/masonry_engine/examples/nookit_offline");
+        	console.log("The browser console is a developer tool not intended for use by [redacted] users.  FEEL FREE TO copy and paste any code in this window.  Look, we trust you not to hack our game. Pretty please, don't go poking around where you're not meant to. http://github.com/donnyworks/masonry_engine/tree/main/examples/nookit_offline");
             container_running = true;
 		}
 	}
